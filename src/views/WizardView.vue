@@ -65,7 +65,7 @@
             <div class="card-body py-4">
               <!-- Address Selection -->
               <div class="row mb-4">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                   <label for="city" class="form-label fw-bold">Şehir *</label>
                   <select
                     id="city"
@@ -81,7 +81,7 @@
                   </select>
                 </div>
 
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                   <label for="district" class="form-label fw-bold">İlçe *</label>
                   <select
                     id="district"
@@ -98,27 +98,6 @@
                       :value="district"
                     >
                       {{ district }}
-                    </option>
-                  </select>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <label for="address" class="form-label fw-bold">Adres ID *</label>
-                  <select
-                    id="address"
-                    v-model="wizardStore.addressId"
-                    @change="wizardStore.setAddressId($event.target.value)"
-                    class="form-select form-select-sm"
-                    :disabled="!wizardStore.district"
-                    required
-                  >
-                    <option value="">Adres seçiniz</option>
-                    <option
-                      v-for="address in wizardStore.availableAddresses"
-                      :key="address.id"
-                      :value="address.id"
-                    >
-                      {{ address.street }} {{ address.building }}
                     </option>
                   </select>
                 </div>
@@ -273,10 +252,9 @@
                 :householdData="{
                   city: wizardStore.city,
                   district: wizardStore.district,
-                  addressId: wizardStore.addressId,
                   household: wizardStore.household,
                 }"
-                :addressId="wizardStore.addressId"
+                :addressId="wizardStore.getMockAddressId()"
                 @select-recommendation="handleSelectRecommendation"
                 @show-details="handleShowDetails"
               />
@@ -314,7 +292,7 @@
               </h4>
             </div>
             <div class="card-body py-4">
-              <CoverageBadge :addressId="wizardStore.addressId" />
+              <CoverageBadge :addressId="wizardStore.getMockAddressId()" />
             </div>
           </div>
 

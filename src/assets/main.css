@@ -139,10 +139,10 @@ body.dark {
   --color-background-input: #334155;
   --color-background-button: #334155;
 
-  /* Text Colors - Light for Dark Background */
-  --color-text: #f8fafc;
-  --color-text-light: #cbd5e1;
-  --color-text-mute: #94a3b8;
+  /* Text Colors - Yellow/Gold for Dark Background */
+  --color-text: #fbbf24;
+  --color-text-light: #fde047;
+  --color-text-mute: #fef3c7;
   --color-text-inverse: #0f172a;
 
   /* Border Colors - Subtle Dark */
@@ -758,11 +758,32 @@ p {
   color: var(--color-primary-dark);
 }
 
-/* Header & Navigation */
+/* Header & Navigation - Enhanced */
 .header {
   background: linear-gradient(135deg, var(--color-background), var(--color-background-soft));
   border-bottom: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
 }
 
 .logo-placeholder {
@@ -782,14 +803,31 @@ p {
   box-shadow: var(--shadow-lg);
 }
 
+.logo-text {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Main Navigation */
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
 .nav-link {
   color: var(--color-text);
   text-decoration: none;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1rem;
   border-radius: var(--radius-md);
   transition: all var(--transition-normal);
   font-weight: 500;
+  font-size: 0.9rem;
   position: relative;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -802,6 +840,143 @@ p {
 .nav-link.router-link-active {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: var(--color-text-inverse);
+  box-shadow: var(--shadow-md);
+}
+
+/* Navigation Dropdown */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropdown-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.nav-dropdown-btn:hover {
+  background: var(--color-primary-lighter);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--color-background-card);
+  min-width: 200px;
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  z-index: 1000;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+}
+
+.nav-dropdown:hover .nav-dropdown-content {
+  display: block;
+}
+
+.dropdown-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  font-size: 0.9rem;
+}
+
+.dropdown-link:hover {
+  background: var(--color-primary-lighter);
+  color: var(--color-primary);
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* Search Section */
+.search-section {
+  position: relative;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--color-text-mute);
+  font-size: 1rem;
+}
+
+.search-input {
+  background: var(--color-background-input);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+  width: 200px;
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+  font-size: 0.9rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  width: 250px;
+}
+
+.search-input::placeholder {
+  color: var(--color-text-mute);
+}
+
+/* Login Section */
+.login-section {
+  display: flex;
+  align-items: center;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark));
+  color: var(--color-text-inverse);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, var(--color-secondary-dark), var(--color-secondary));
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
@@ -821,21 +996,276 @@ p {
   box-shadow: var(--shadow-md);
 }
 
-/* Responsive Design */
+/* Modal Styles - User Friendly Design */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  padding: 1.5rem;
+}
+
+/* Login Modal - Compact & Oval */
+.modal-content {
+  border-radius: 24px; /* Daha oval kenarlar */
+  max-width: 480px;
+  max-height: 85vh;
+  animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xl);
+}
+
+.modal-header {
+  padding: 1.5rem 1.5rem 1rem 1.5rem; /* Spacing küçültüldü */
+  background: linear-gradient(135deg, var(--color-background-soft), var(--color-background-card));
+  border-radius: 24px 24px 0 0; /* Oval üst köşeler */
+}
+
+.modal-body {
+  padding: 1.5rem; /* Spacing küçültüldü */
+}
+
+/* Login Form - Compact Spacing */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* 1.5rem → 1rem */
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* 0.75rem → 0.5rem */
+  width: 100%;
+}
+
+.form-label {
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.9rem; /* 0.95rem → 0.9rem */
+  display: block;
+  margin-bottom: 0.2rem; /* 0.25rem → 0.2rem */
+  position: relative;
+}
+
+.form-control {
+  background: var(--color-background-input);
+  border: 2px solid var(--color-border);
+  border-radius: 16px; /* Daha oval input'lar */
+  padding: 0.875rem 1rem; /* 1rem 1.25rem → 0.875rem 1rem */
+  color: var(--color-text);
+  transition: all var(--transition-normal);
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+  line-height: 1.5;
+  position: relative;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem; /* 0.9rem → 0.85rem */
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 0.75rem; /* 1rem → 0.75rem */
+  margin-top: 0.4rem; /* 0.5rem → 0.4rem */
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem; /* 0.75rem → 0.6rem */
+  color: var(--color-text);
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+  padding: 0.4rem; /* 0.5rem → 0.4rem */
+  border-radius: 12px; /* Daha oval */
+}
+
+.checkbox-label input[type='checkbox'] {
+  width: 18px; /* 20px → 18px */
+  height: 18px; /* 20px → 18px */
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  border-radius: 6px; /* Daha oval checkbox */
+}
+
+.forgot-password {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.85rem; /* 0.9rem → 0.85rem */
+  white-space: nowrap;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  padding: 0.4rem 0.6rem; /* 0.5rem 0.75rem → 0.4rem 0.6rem */
+  border-radius: 12px; /* Daha oval */
+  border: 1px solid transparent;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 0.875rem 1.25rem; /* 1rem 1.5rem → 0.875rem 1.25rem */
+  font-weight: 600;
+  font-size: 1rem; /* 1.1rem → 1rem */
+  margin-top: 0.75rem; /* 1rem → 0.75rem */
+  box-sizing: border-box;
+  border-radius: 16px; /* Daha oval buton */
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border: none;
+  color: var(--color-text-inverse);
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+.btn-login::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-login:hover::before {
+  left: 100%;
+}
+
+.login-divider {
+  text-align: center;
+  margin: 1.5rem 0; /* 2rem → 1.5rem */
+  position: relative;
+  width: 100%;
+}
+
+.login-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.login-divider span {
+  background: var(--color-background-card);
+  padding: 0 1.25rem; /* 1.5rem → 1.25rem */
+  color: var(--color-text-mute);
+  font-size: 0.85rem; /* 0.9rem → 0.85rem */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* 1rem → 0.75rem */
+  margin-bottom: 1.5rem; /* 2rem → 1.5rem */
+  width: 100%;
+}
+
+.btn-social {
+  width: 100%;
+  padding: 0.875rem 1.25rem; /* 1rem 1.5rem → 0.875rem 1.25rem */
+  font-weight: 600;
+  box-sizing: border-box;
+  border-radius: 16px; /* Daha oval sosyal butonlar */
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem; /* 0.75rem → 0.6rem */
+  font-size: 0.95rem; /* 1rem → 0.95rem */
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  background: var(--color-background-card);
+  color: var(--color-text);
+}
+
+.register-section {
+  text-align: center;
+  padding-top: 1.25rem; /* 1.5rem → 1.25rem */
+  border-top: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.register-text {
+  color: var(--color-text);
+  margin: 0;
+  font-size: 0.9rem; /* 0.95rem → 0.9rem */
+  line-height: 1.6;
+}
+
+.register-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  padding: 0.2rem 0.4rem; /* 0.25rem 0.5rem → 0.2rem 0.4rem */
+  border-radius: 8px; /* Daha oval link */
+  margin-left: 0.2rem; /* 0.25rem → 0.2rem */
+  border: 1px solid transparent;
+}
+
+/* Responsive Modal */
 @media (max-width: 768px) {
-  .progress-step {
-    width: 32px;
-    height: 32px;
-    font-size: 0.9rem;
+  .modal-overlay {
+    padding: 1rem;
   }
 
-  .card-body {
-    padding: var(--spacing-md);
+  .modal-content {
+    max-width: 100%;
+    max-height: 90vh;
   }
 
-  .btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.25rem;
+  }
+
+  .form-control {
+    padding: 0.875rem 1rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .btn-login,
+  .btn-social {
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
   }
 }
 
@@ -865,4 +1295,99 @@ body.dark .btn-outline-secondary {
 body.dark .btn-outline-secondary:hover {
   background: var(--color-text-light);
   color: var(--color-text-inverse);
+}
+
+/* Dark theme text color fixes */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6 {
+  color: var(--color-text) !important;
+}
+
+body.dark .text-primary {
+  color: var(--color-primary) !important;
+}
+
+body.dark .text-muted {
+  color: var(--color-text-light) !important;
+}
+
+body.dark .text-success {
+  color: var(--color-success) !important;
+}
+
+body.dark .text-warning {
+  color: var(--color-warning) !important;
+}
+
+body.dark .text-danger {
+  color: var(--color-danger) !important;
+}
+
+body.dark .text-info {
+  color: var(--color-info) !important;
+}
+
+/* Dark theme form labels */
+body.dark .form-label {
+  color: var(--color-text) !important;
+}
+
+body.dark .form-control::placeholder {
+  color: var(--color-text-mute) !important;
+}
+
+/* Dark theme card headers */
+body.dark .card-header {
+  color: var(--color-text) !important;
+}
+
+/* Dark theme progress steps */
+body.dark .progress-step.pending {
+  color: var(--color-text-light) !important;
+}
+
+body.dark .progress-line {
+  background-color: var(--color-border) !important;
+}
+
+/* Global Theme Styles */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition: all var(--transition-normal);
+}
+
+body.dark {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Ensure all elements inherit theme colors */
+* {
+  transition:
+    background-color var(--transition-normal),
+    color var(--transition-normal);
+}
+
+/* Main container background */
+.min-h-screen {
+  background-color: var(--color-background) !important;
+  min-height: 100vh;
+}
+
+/* Background colors for different sections */
+.bg-light {
+  background-color: var(--color-background-soft) !important;
+}
+
+.bg-primary-light {
+  background-color: var(--color-primary-lighter) !important;
+}
+
+.bg-warning-light {
+  background-color: var(--color-warning-lightest) !important;
 }
