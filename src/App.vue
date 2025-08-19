@@ -47,10 +47,10 @@ const toggleTheme = () => {
           </div>
 
           <div class="login-section">
-            <button class="login-btn" @click="showLoginModal = true">
+            <RouterLink to="/login" class="login-btn">
               <i class="bi bi-person-circle me-2"></i>
               Giriş Yap
-            </button>
+            </RouterLink>
           </div>
 
           <ThemeToggle :isDark="isDark" @toggle="toggleTheme" />

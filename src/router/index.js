@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import WizardView from '../views/WizardView.vue'
 import LoginView from '../views/LoginView.vue'
+import OnboardingView from '../views/OnboardingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', redirect: '/wizard' },
+    { path: '/', redirect: '/onboarding' },
+    { path: '/onboarding', name: 'onboarding', component: OnboardingView },
     { path: '/wizard', name: 'wizard', component: WizardView },
     { path: '/login', name: 'login', component: LoginView },
     { path: '/paketler', name: 'paketler', component: WizardView }, // Temporary redirect
@@ -14,7 +16,7 @@ const router = createRouter({
     { path: '/tv', name: 'tv', component: WizardView }, // Temporary redirect
     { path: '/kurumsal', name: 'kurumsal', component: WizardView }, // Temporary redirect
     { path: '/destek', name: 'destek', component: WizardView }, // Temporary redirect
-    { path: '/:pathMatch(.*)*', redirect: '/wizard' },
+    { path: '/:pathMatch(.*)*', redirect: '/onboarding' },
   ],
 })
 export default router
