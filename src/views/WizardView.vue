@@ -103,12 +103,56 @@
                 </div>
               </div>
 
+              <!-- Household Members Count -->
+              <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                  <label for="householdMembers" class="form-label fw-bold">
+                    <i class="bi bi-people me-2"></i>
+                    Hane Üyeleri Sayısı *
+                  </label>
+                  <input
+                    id="householdMembers"
+                    type="number"
+                    v-model.number="wizardStore.householdMembers"
+                    @input="wizardStore.setHouseholdMembers($event.target.value)"
+                    min="1"
+                    max="10"
+                    class="form-control form-control-sm"
+                    placeholder="Örn: 4"
+                    required
+                  />
+                  <div class="form-text">Hane içinde yaşayan toplam kişi sayısı</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="activeLines" class="form-label fw-bold">
+                    <i class="bi bi-phone me-2"></i>
+                    Aktif Mobil Hat Sayısı *
+                  </label>
+                  <input
+                    id="activeLines"
+                    type="number"
+                    v-model.number="wizardStore.activeLines"
+                    @input="wizardStore.setActiveLines($event.target.value)"
+                    min="1"
+                    max="5"
+                    class="form-control form-control-sm"
+                    placeholder="Örn: 3"
+                    required
+                  />
+                  <div class="form-text">Şu anda aktif olan mobil hat sayısı</div>
+                </div>
+              </div>
+
               <!-- Household Lines -->
               <div class="mb-4">
                 <h5 class="mb-3">
-                  <i class="bi bi-people me-2"></i>
-                  Hane Hat Bilgileri
+                  <i class="bi bi-phone me-2"></i>
+                  Mobil Hat Detayları
                 </h5>
+                <p class="text-muted small mb-3">
+                  Her hat için aylık GB, dakika ve TV izleme sürelerini belirtin
+                </p>
 
                 <div
                   class="row g-3"
@@ -175,7 +219,9 @@
                           </div>
 
                           <div class="col-md-4">
-                            <label :for="`tv-${index}`" class="form-label small">TV HD Saat</label>
+                            <label :for="`tv-${index}`" class="form-label small"
+                              >Ortalama TV İzleme Saati</label
+                            >
                             <input
                               :id="`tv-${index}`"
                               type="number"
@@ -327,8 +373,13 @@ const selectedRecommendation = ref(null)
 
 const handleContinue = () => {
   if (wizardStore.canContinue) {
-    const formData = wizardStore.getFormData()
-    console.log('Form Data:', formData)
+    console.log('Form Data:', {
+      city: wizardStore.city,
+      district: wizardStore.district,
+      householdMembers: wizardStore.householdMembers,
+      activeLines: wizardStore.activeLines,
+      household: wizardStore.household,
+    })
     showRecommendations.value = true
   }
 }

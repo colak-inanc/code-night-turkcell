@@ -155,11 +155,26 @@ onMounted(() => {
 })
 
 const startWizard = () => {
-  router.push('/wizard')
+  console.log('startWizard function called')
+  console.log('Router object:', router)
+  console.log('Current route:', router.currentRoute.value)
+
+  try {
+    router.push('/wizard')
+    console.log('Router.push called successfully')
+  } catch (error) {
+    console.error('Router.push error:', error)
+  }
 }
 
 const goToHome = () => {
-  router.push('/wizard')
+  console.log('goToHome function called')
+  try {
+    router.push('/wizard')
+    console.log('Router.push called successfully')
+  } catch (error) {
+    console.error('Router.push error:', error)
+  }
 }
 </script>
 
