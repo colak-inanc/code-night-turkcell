@@ -16,10 +16,10 @@ const toggleTheme = () => {
   <div id="app" :class="{ dark: isDark }">
     <header class="header">
       <div class="header-container">
-        <div class="logo-section">
+        <RouterLink to="/onboarding" class="logo-section logo-link">
           <div class="logo-placeholder">TURKCELL</div>
           <span class="logo-text">Kurumsal</span>
-        </div>
+        </RouterLink>
 
         <nav class="main-nav">
           <div class="nav-dropdown">
