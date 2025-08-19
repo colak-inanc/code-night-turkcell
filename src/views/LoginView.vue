@@ -4,11 +4,13 @@
       <!-- Left Side - Branding -->
       <div class="branding-section">
         <div class="branding-content">
-          <div class="logo-placeholder">TURKCELL</div>
+          <RouterLink to="/onboarding" class="logo-link" @click="goToOnboarding">
+            <div class="logo-placeholder">TURKCELL</div>
+          </RouterLink>
           <h1 class="brand-title">Ev+Mobil Paket Danışmanı</h1>
           <p class="brand-subtitle">
-            Size en uygun paketi bulmak için giriş yapın ve kişiselleştirilmiş 
-            önerilerimizi keşfedin.
+            Size en uygun paketi bulmak için giriş yapın ve kişiselleştirilmiş önerilerimizi
+            keşfedin.
           </p>
           <div class="features-list">
             <div class="feature-item">
@@ -40,9 +42,9 @@
               <label class="form-label">E-posta veya Telefon</label>
               <div class="input-wrapper">
                 <i class="bi bi-envelope input-icon"></i>
-                <input 
-                  type="email" 
-                  class="form-control" 
+                <input
+                  type="email"
+                  class="form-control"
                   placeholder="ornek@email.com"
                   v-model="formData.email"
                   required
@@ -54,18 +56,14 @@
               <label class="form-label">Şifre</label>
               <div class="input-wrapper">
                 <i class="bi bi-lock input-icon"></i>
-                <input 
-                  :type="showPassword ? 'text' : 'password'" 
-                  class="form-control" 
+                <input
+                  :type="showPassword ? 'text' : 'password'"
+                  class="form-control"
                   placeholder="Şifrenizi girin"
                   v-model="formData.password"
                   required
                 />
-                <button 
-                  type="button" 
-                  class="password-toggle"
-                  @click="togglePassword"
-                >
+                <button type="button" class="password-toggle" @click="togglePassword">
                   <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                 </button>
               </div>
@@ -104,10 +102,8 @@
 
           <div class="register-section">
             <p class="register-text">
-              Hesabınız yok mu? 
-              <RouterLink to="/register" class="register-link">
-                Hemen üye olun
-              </RouterLink>
+              Hesabınız yok mu?
+              <RouterLink to="/register" class="register-link"> Hemen üye olun </RouterLink>
             </p>
           </div>
 
@@ -125,7 +121,7 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
 
 const router = useRouter()
 const isLoading = ref(false)
@@ -134,16 +130,21 @@ const showPassword = ref(false)
 const formData = reactive({
   email: '',
   password: '',
-  rememberMe: false
+  rememberMe: false,
 })
 
 const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
 
+const goToOnboarding = () => {
+  console.log('Logo clicked! Redirecting to onboarding...')
+  router.push('/onboarding')
+}
+
 const handleLogin = async () => {
   isLoading.value = true
-  
+
   // Simulate API call
   setTimeout(() => {
     isLoading.value = false
@@ -160,18 +161,18 @@ const handleLogin = async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 1rem;
 }
 
 .login-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  max-width: 1200px;
+  max-width: 1000px;
   width: 100%;
   background: var(--color-background-card);
-  border-radius: 24px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: var(--shadow-2xl);
+  box-shadow: var(--shadow-xl);
   border: 1px solid var(--color-border);
 }
 
@@ -179,7 +180,7 @@ const handleLogin = async () => {
 .branding-section {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: var(--color-text-inverse);
-  padding: 3rem 2rem;
+  padding: 2rem 1.5rem;
   display: flex;
   align-items: center;
   position: relative;
@@ -203,25 +204,37 @@ const handleLogin = async () => {
   text-align: center;
 }
 
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.logo-link:hover {
+  transform: scale(1.05);
+}
+
 .logo-placeholder {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 2rem;
-  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
   opacity: 0.9;
+  cursor: pointer;
 }
 
 .brand-title {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 .brand-subtitle {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
   opacity: 0.9;
 }
 
@@ -232,9 +245,9 @@ const handleLogin = async () => {
 .feature-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
 }
 
 .feature-item i {
@@ -244,24 +257,24 @@ const handleLogin = async () => {
 
 /* Form Section */
 .form-section {
-  padding: 3rem 2rem;
+  padding: 2rem 1.5rem;
   display: flex;
   align-items: center;
 }
 
 .form-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
   margin: 0 auto;
 }
 
 .form-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .form-title {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: 0.5rem;
@@ -269,23 +282,23 @@ const handleLogin = async () => {
 
 .form-subtitle {
   color: var(--color-text-mute);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .login-form {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-label {
   display: block;
   color: var(--color-text);
   font-weight: 600;
-  font-size: 0.95rem;
-  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
 
 .input-wrapper {
@@ -304,12 +317,12 @@ const handleLogin = async () => {
 
 .form-control {
   width: 100%;
-  padding: 1rem 1rem 1rem 3rem;
+  padding: 0.875rem 1rem 0.875rem 2.5rem;
   border: 2px solid var(--color-border);
-  border-radius: 16px;
+  border-radius: 14px;
   background: var(--color-background-input);
   color: var(--color-text);
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
   box-sizing: border-box;
 }
@@ -350,8 +363,8 @@ const handleLogin = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
 }
 
 .checkbox-label {
@@ -362,7 +375,7 @@ const handleLogin = async () => {
   cursor: pointer;
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type='checkbox'] {
   width: 18px;
   height: 18px;
   accent-color: var(--color-primary);
@@ -381,12 +394,12 @@ const handleLogin = async () => {
 
 .btn-login {
   width: 100%;
-  padding: 1rem;
+  padding: 0.875rem;
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   color: var(--color-text-inverse);
   border: none;
-  border-radius: 16px;
-  font-size: 1.1rem;
+  border-radius: 14px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -415,12 +428,14 @@ const handleLogin = async () => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .login-divider {
   text-align: center;
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   position: relative;
 }
 
@@ -444,25 +459,25 @@ const handleLogin = async () => {
 .social-login {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .btn-social {
   width: 100%;
-  padding: 1rem;
+  padding: 0.875rem;
   border: 2px solid var(--color-border);
-  border-radius: 16px;
+  border-radius: 14px;
   background: var(--color-background-card);
   color: var(--color-text);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .btn-social:hover {
@@ -483,7 +498,7 @@ const handleLogin = async () => {
 
 .register-section {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .register-text {
@@ -525,19 +540,19 @@ const handleLogin = async () => {
     grid-template-columns: 1fr;
     max-width: 500px;
   }
-  
+
   .branding-section {
     padding: 2rem 1.5rem;
   }
-  
+
   .brand-title {
     font-size: 1.8rem;
   }
-  
+
   .form-section {
     padding: 2rem 1.5rem;
   }
-  
+
   .form-title {
     font-size: 1.6rem;
   }
@@ -547,12 +562,12 @@ const handleLogin = async () => {
   .login-page {
     padding: 1rem 0.5rem;
   }
-  
+
   .branding-section,
   .form-section {
     padding: 1.5rem 1rem;
   }
-  
+
   .form-options {
     flex-direction: column;
     gap: 1rem;

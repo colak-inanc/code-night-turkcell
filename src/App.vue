@@ -34,8 +34,8 @@ const toggleTheme = () => {
               <RouterLink to="/tv" class="dropdown-link">TV+</RouterLink>
             </div>
           </div>
-          <RouterLink to="/kurumsal" class="nav-link">Kurumsal</RouterLink>
-          <RouterLink to="/destek" class="nav-link">Destek</RouterLink>
+          <a href="#" class="nav-link">Kurumsal</a>
+          <a href="#" class="nav-link">Destek</a>
         </nav>
 
         <div class="header-actions">
@@ -108,9 +108,9 @@ const toggleTheme = () => {
         <div class="footer-bottom-container">
           <p class="footer-copyright">© 2024 Turkcell. Tüm hakları saklıdır.</p>
           <div class="footer-legal">
-            <a href="#" class="footer-legal-link">Gizlilik Politikası</a>
-            <a href="#" class="footer-legal-link">Kullanım Şartları</a>
-            <a href="#" class="footer-legal-link">KVKK</a>
+            <a href="#" class="footer-legal-link">Gizlilik Politikası |</a>
+            <a href="#" class="footer-legal-link"> Kullanım Şartları |</a>
+            <a href="#" class="footer-legal-link"> KVKK</a>
           </div>
         </div>
       </div>
