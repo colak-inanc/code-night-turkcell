@@ -64,11 +64,38 @@ export const useWizardStore = defineStore('wizard', () => {
   }
 
   const setHouseholdMembers = (count) => {
-    householdMembers.value = Math.max(1, Math.min(10, parseInt(count) || 1))
+    const newCount = Math.max(1, Math.min(10, parseInt(count) || 1))
+
+    // Hane üyeleri sayısı, en az aktif hat sayısı kadar olmalı
+    if (newCount < activeLines.value) {
+      // Eğer hane üyeleri sayısı hat sayısından az olacaksa, hat sayısını da güncelle
+      activeLines.value = newCount
+      // Hat sayısı değiştiği için household array'ini de güncelle
+      if (newCount > household.value.length) {
+        for (let i = household.value.length; i < newCount; i++) {
+          addHouseholdLine()
+        }
+      } else if (newCount < household.value.length) {
+        household.value.splice(newCount)
+        const lineNames = ['Ana Hat', 'İkinci Hat', 'Üçüncü Hat', 'Dördüncü Hat', 'Beşinci Hat']
+        household.value.forEach((line, idx) => {
+          line.line_id = lineNames[idx] || `${idx + 1}. Hat`
+        })
+      }
+    }
+
+    householdMembers.value = newCount
   }
 
   const setActiveLines = (count) => {
     const newCount = Math.max(1, Math.min(5, parseInt(count) || 1))
+
+    // Aktif hat sayısı, hane üyeleri sayısından fazla olamaz
+    if (newCount > householdMembers.value) {
+      // Eğer hat sayısı hane üyeleri sayısından fazla olacaksa, hane üyeleri sayısını da güncelle
+      householdMembers.value = newCount
+    }
+
     activeLines.value = newCount
 
     // Auto-adjust household lines based on active lines
@@ -99,6 +126,14 @@ export const useWizardStore = defineStore('wizard', () => {
         expected_min: 500,
         tv_hd_hours: 4,
       })
+
+      // Aktif hat sayısını güncelle
+      activeLines.value = household.value.length
+
+      // Hane üyeleri sayısı, en az aktif hat sayısı kadar olmalı
+      if (householdMembers.value < activeLines.value) {
+        householdMembers.value = activeLines.value
+      }
     }
   }
 
@@ -111,6 +146,11 @@ export const useWizardStore = defineStore('wizard', () => {
       })
       // Update active lines count
       activeLines.value = household.value.length
+
+      // Hane üyeleri sayısı, en az aktif hat sayısı kadar olmalı
+      if (householdMembers.value < activeLines.value) {
+        householdMembers.value = activeLines.value
+      }
     }
   }
 

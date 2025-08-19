@@ -109,13 +109,15 @@
                     type="number"
                     v-model.number="wizardStore.householdMembers"
                     @input="wizardStore.setHouseholdMembers($event.target.value)"
-                    min="1"
+                    :min="wizardStore.activeLines"
                     max="10"
                     class="form-control form-control-sm"
                     placeholder="Örn: 4"
                     required
                   />
-                  <div class="form-text">Hane içinde yaşayan toplam kişi sayısı</div>
+                  <div class="form-text">
+                    Hane içinde yaşayan toplam kişi sayısı (en az hat sayısı kadar olmalı)
+                  </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -129,12 +131,14 @@
                     v-model.number="wizardStore.activeLines"
                     @input="wizardStore.setActiveLines($event.target.value)"
                     min="1"
-                    max="5"
+                    :max="wizardStore.householdMembers"
                     class="form-control form-control-sm"
                     placeholder="Örn: 3"
                     required
                   />
-                  <div class="form-text">Şu anda aktif olan mobil hat sayısı</div>
+                  <div class="form-text">
+                    Şu anda aktif olan mobil hat sayısı (hane üyeleri sayısından fazla olamaz)
+                  </div>
                 </div>
               </div>
 
@@ -315,15 +319,27 @@
               Geri Dön
             </button>
 
-            <button
-              @click="continueToCoverage"
-              :disabled="!selectedRecommendation"
-              type="button"
-              class="btn btn-primary"
-            >
-              Kapsama Kontrolü
-              <i class="bi bi-wifi ms-2"></i>
-            </button>
+            <div class="d-flex gap-2">
+              <button
+                @click="skipToCoverage"
+                type="button"
+                class="btn btn-outline-warning"
+                title="Bu adımı atla ve kapsama kontrolüne geç"
+              >
+                <i class="bi bi-skip-forward me-2"></i>
+                Atla
+              </button>
+
+              <button
+                @click="continueToCoverage"
+                :disabled="!selectedRecommendation"
+                type="button"
+                class="btn btn-primary"
+              >
+                Kapsama Kontrolü
+                <i class="bi bi-wifi ms-2"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -356,6 +372,40 @@
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Popup -->
+  <div v-if="showSuccessPopup" class="success-popup-overlay">
+    <div class="success-popup-content">
+      <div class="success-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <h3 class="success-title">✅ Randevunuz Oluşturuldu!</h3>
+      <div class="success-details">
+        <div class="detail-item">
+          <i class="bi bi-calendar-event"></i>
+          <span class="detail-label">Tarih:</span>
+          <span class="detail-value">{{ successAppointment.date }}</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-clock"></i>
+          <span class="detail-label">Saat:</span>
+          <span class="detail-value">{{ successAppointment.time }}</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-geo-alt"></i>
+          <span class="detail-label">Adres:</span>
+          <span class="detail-value">{{ successAppointment.address }}</span>
+        </div>
+      </div>
+      <p class="success-message">Kurulum ekibi belirtilen tarih ve saatte adresinizde olacaktır.</p>
+      <div class="success-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" :style="{ width: progressWidth + '%' }"></div>
+        </div>
+        <span class="progress-text">{{ progressText }}</span>
       </div>
     </div>
   </div>
@@ -503,6 +553,10 @@ const showAppointmentModal = ref(false)
 const selectedDate = ref('')
 const selectedTime = ref('')
 const appointmentNotes = ref('')
+const showSuccessPopup = ref(false)
+const successAppointment = ref({})
+const progressWidth = ref(0)
+const progressText = ref('')
 
 // Initialize step based on props or route
 onMounted(() => {
@@ -563,6 +617,14 @@ const continueToCoverage = () => {
   showRecommendations.value = false
   showCoverage.value = true
   router.push('/wizard/step3')
+}
+
+const skipToCoverage = () => {
+  // Öneri seçmeden doğrudan kapsama kontrolüne geç
+  showRecommendations.value = false
+  showCoverage.value = true
+  router.push('/wizard/step3')
+  console.log('Öneri adımı atlandı, doğrudan kapsama kontrolüne geçiliyor')
 }
 
 const goBack = () => {
@@ -644,17 +706,62 @@ const getSelectedTimeText = () => {
 
 const confirmAppointment = () => {
   if (selectedDate.value && selectedTime.value) {
-    // Show success message
-    alert(
-      `✅ Randevunuz başarıyla oluşturuldu!\n\n📅 Tarih: ${getSelectedDateText()}\n🕐 Saat: ${getSelectedTimeText()}\n\nKurulum ekibi belirtilen tarih ve saatte adresinizde olacaktır.`,
-    )
+    // Set success appointment data BEFORE closing modal
+    const selectedDateText = getSelectedDateText()
+    const selectedTimeText = getSelectedTimeText()
+    const addressText =
+      wizardStore.city && wizardStore.district
+        ? `${wizardStore.city} / ${wizardStore.district}`
+        : 'Adres bilgisi girilmemiş'
+
+    console.log('Selected Date:', selectedDate.value)
+    console.log('Selected Time:', selectedTime.value)
+    console.log('Date Text:', selectedDateText)
+    console.log('Time Text:', selectedTimeText)
+    console.log('City from store:', wizardStore.city)
+    console.log('District from store:', wizardStore.district)
+    console.log('Final Address Text:', addressText)
+
+    successAppointment.value = {
+      date: selectedDateText,
+      time: selectedTimeText,
+      address: addressText,
+    }
 
     // Close modal and reset
     closeAppointmentModal()
 
-    // Navigate to success page or reset wizard
-    router.push('/onboarding')
+    // Show success popup
+    showSuccessPopup.value = true
+
+    // Start progress animation
+    startProgressAnimation()
   }
+}
+
+const startProgressAnimation = () => {
+  progressWidth.value = 0
+  progressText.value = 'Ana sayfaya yönlendiriliyor...'
+
+  const duration = 5000 // 5 seconds (increased from 2)
+  const interval = 50 // Update every 50ms
+  const steps = duration / interval
+  const increment = 100 / steps
+
+  const timer = setInterval(() => {
+    progressWidth.value += increment
+
+    if (progressWidth.value >= 100) {
+      clearInterval(timer)
+      progressWidth.value = 100
+      progressText.value = 'Yönlendiriliyor...'
+
+      // Navigate to onboarding after animation
+      setTimeout(() => {
+        router.push('/onboarding')
+      }, 1000) // Increased from 500ms
+    }
+  }, interval)
 }
 </script>
 
@@ -677,6 +784,308 @@ const confirmAppointment = () => {
 
 .bg-primary-light {
   background-color: var(--color-primary-lighter) !important;
+}
+
+/* Success Popup Styles */
+.success-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.success-popup-content {
+  background: var(--color-background-card);
+  border-radius: 24px;
+  max-width: 500px;
+  width: 100%;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--color-success-light);
+  animation: popupSlideIn 0.4s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.success-popup-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-success), var(--color-success-light));
+  border-radius: 24px 24px 0 0;
+}
+
+.success-icon {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: iconBounce 0.6s ease-out 0.3s both;
+}
+
+@keyframes iconBounce {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.success-icon i {
+  font-size: 3rem;
+  color: white;
+}
+
+.success-title {
+  color: var(--color-success-dark);
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  animation: titleSlideIn 0.5s ease-out 0.4s both;
+}
+
+@keyframes titleSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-details {
+  margin-bottom: 2rem;
+  animation: detailsSlideIn 0.5s ease-out 0.5s both;
+}
+
+@keyframes detailsSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--color-background-soft);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.detail-item i {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  width: 20px;
+}
+
+.detail-label {
+  color: var(--color-text-mute);
+  font-weight: 500;
+  min-width: 60px;
+}
+
+.detail-value {
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 1.1rem;
+  word-break: break-word;
+  max-width: 200px;
+  text-align: center;
+}
+
+.success-message {
+  color: var(--color-text-mute);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  animation: messageSlideIn 0.5s ease-out 0.6s both;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-progress {
+  animation: progressSlideIn 0.5s ease-out 0.7s both;
+}
+
+@keyframes progressSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Success Popup */
+@media (max-width: 768px) {
+  .success-popup-content {
+    max-width: 90%;
+    padding: 2rem 1.5rem;
+  }
+
+  .success-title {
+    font-size: 1.5rem;
+  }
+
+  .detail-item {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .detail-label {
+    min-width: auto;
+  }
+
+  .detail-value {
+    max-width: 100%;
+    font-size: 1rem;
+  }
+}
+
+/* Responsive Navigation Buttons */
+@media (max-width: 768px) {
+  .d-flex.justify-content-between.align-items-center {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .d-flex.gap-2 {
+    gap: 0.5rem !important;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Skip Button Styles */
+.btn-outline-warning {
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+  transition: all var(--transition-fast);
+}
+
+.btn-outline-warning:hover {
+  background-color: var(--color-warning);
+  color: var(--color-text-inverse);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-outline-warning:focus {
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.25);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--color-background-soft);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-border);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-success), var(--color-success-light));
+  border-radius: 4px;
+  transition: width 0.05s linear;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.progress-text {
+  color: var(--color-success);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 /* Appointment Modal Styles */
