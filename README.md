@@ -2,7 +2,7 @@
 
 Bu proje, Turkcell kurumsal müşterileri için geliştirilmiş modern bir telekom paket seçim sistemidir. Vue.js 3, Pinia ve modern web teknolojileri kullanılarak geliştirilmiştir.
 
-## 🚀 Özellikler
+## Özellikler
 
 ### 1. Girdi Sihirbazı (Tek Ekran)
 - **Adres Seçimi**: Şehir → İlçe → Adres ID (hierarchical dropdown)
@@ -59,7 +59,7 @@ src/
 └── assets/             # CSS ve görsel dosyalar
 ```
 
-## 🛠️ Teknolojiler
+## 🛠Teknolojiler
 
 - **Vue.js 3** - Composition API
 - **Pinia** - State management
@@ -68,14 +68,14 @@ src/
 - **Grid/Flexbox** - Modern layout
 - **ES6+** - Modern JavaScript
 
-## 📱 Responsive Tasarım
+## Responsive Tasarım
 
 - **Mobile-first** yaklaşım
 - **Breakpoints**: 480px, 768px, 1024px
 - **Touch-friendly** butonlar (min 44px)
 - **Flexible grids** ve responsive cards
 
-## ♿ Erişilebilirlik
+## Erişilebilirlik
 
 - **ARIA labels** ve roles
 - **Klavye navigasyonu** desteği
@@ -112,30 +112,7 @@ npm run format
 ### Mock Data
 Şu anda mock data kullanılmaktadır. Gerçek API entegrasyonu için store dosyalarındaki mock fonksiyonları gerçek API çağrıları ile değiştirin.
 
-## 🎨 Tema Sistemi
-
-### CSS Variables
-```css
-:root {
-  --color-primary: #0066cc;
-  --color-secondary: #00a651;
-  --color-success: #00a651;
-  --color-warning: #ff9900;
-  --color-danger: #dc3545;
-  /* ... */
-}
-```
-
-### Dark Theme
-```css
-body.dark {
-  --color-background: #0d1117;
-  --color-text: #f0f6fc;
-  /* ... */
-}
-```
-
-## 📊 State Management
+## State Management
 
 ### Pinia Store (bundle.js)
 - **Cities, Districts, Addresses** - Lokasyon verileri
@@ -158,53 +135,3 @@ body.dark {
 5. **Detay Görüntüleme** → Modal ile detaylı bilgi
 6. **Randevu Seçimi** → Kurulum tarihi ve saati
 7. **Sipariş Onayı** → Checkout ve order_id
-
-## 🧪 Test
-
-```bash
-# Unit testler (gelecekte eklenecek)
-npm run test:unit
-
-# E2E testler (gelecekte eklenecek)
-npm run test:e2e
-```
-
-## 📈 Performance
-
-- **Lazy loading** - Route-based code splitting
-- **Computed properties** - Reactive data optimization
-- **Debounced inputs** - API çağrı optimizasyonu
-- **Virtual scrolling** - Büyük listeler için (gelecekte)
-
-## 🔒 Güvenlik
-
-- **Input validation** - Form veri doğrulama
-- **XSS protection** - Vue.js built-in protection
-- **CSRF tokens** - API güvenliği (gelecekte)
-- **Rate limiting** - API abuse koruması (gelecekte)
-
-## 🌐 Browser Support
-
-- **Chrome** 90+
-- **Firefox** 88+
-- **Safari** 14+
-- **Edge** 90+
-
-## 📝 Lisans
-
-Bu proje Turkcell için geliştirilmiştir. Tüm hakları saklıdır.
-
-## 🤝 Katkıda Bulunma
-
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit yapın (`git commit -m 'Add amazing feature'`)
-4. Push yapın (`git push origin feature/amazing-feature`)
-5. Pull Request oluşturun
-
-## 📞 Destek
-
-Teknik destek için:
-- **Email**: tech-support@turkcell.com.tr
-- **Telefon**: 0850 222 0 444
-- **Dokümantasyon**: [docs.turkcell.com.tr](https://docs.turkcell.com.tr)
